@@ -8,8 +8,8 @@ venv
 
 # distribution
 dist/
-.pytest_cache
-.idea
+.pytest_cache/
+.idea/
 .eggs/
 *.egg-info/
 build/

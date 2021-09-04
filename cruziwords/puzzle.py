@@ -125,14 +125,14 @@ class Puzzle:
         """
         :return: Maximum horizontal extension of this puzzle.
         """
-        return self.bottom_right.col - self.top_left.col
+        return self.bottom_right.col - self.top_left.col + 1
 
     @cached_property
     def height(self) -> int:
         """
         :return: Maximum vertical extension of this puzzle.
         """
-        return self.bottom_right.row - self.top_left.row
+        return self.bottom_right.row - self.top_left.row + 1
 
     def add_word(self, word: Word, start_pos: Position, dir: Direction) -> "Puzzle":
         """

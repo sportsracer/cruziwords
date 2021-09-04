@@ -34,3 +34,10 @@ def test_pop_word():
 
     assert len(words) == 1
     assert len(new_words) == 0
+
+
+def test_words_containing_letter(words_csv: Path):
+    words = WordsCorpus.from_csv_file(words_csv)
+
+    assert {(word.solution, i) for word, i in words.containing("I")} == {("BERLIN", 4), ("MADRID", 4)}
+    assert not set(words.containing("X"))

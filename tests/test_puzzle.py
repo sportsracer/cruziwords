@@ -53,6 +53,9 @@ def test_puzzle_dimensions(puzzle: Puzzle, kabul: Word):
     assert puzzle.top_left == Position(0, -2)
     assert puzzle.bottom_right == Position(5, 3)
 
+    assert puzzle.width == 6
+    assert puzzle.height == 6
+
 
 def test_add_word_collision(puzzle: Puzzle, kabul: Word):
     puzzle = puzzle.add_word(kabul, Position(0, 0), Direction.ACROSS)

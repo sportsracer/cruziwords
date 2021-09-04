@@ -49,6 +49,17 @@ class WordsCorpus:
         words.remove(word)
         return WordsCorpus(words)
 
+    def containing(self, letter: str) -> Iterable[tuple[Word, int]]:
+        """
+        :param letter: Which words contain this letter?
+        :return: Yields all words which contain a certain letter, including the position the letter has in that word.
+        """
+        for word in self.words:
+            if letter in word.solution:  # This line speeds up the code significantly
+                for i, _letter in enumerate(word.solution):
+                    if _letter == letter:
+                        yield word, i
+
     @classmethod
     def from_csv_file(cls, csv_path: str) -> "WordsCorpus":
         """
