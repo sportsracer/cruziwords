@@ -1,0 +1,15 @@
+# Python caching
+__pycache__
+
+# development
+venv
+.tox
+.coverage
+
+# distribution
+dist/
+.pytest_cache
+.idea
+.eggs/
+*.egg-info/
+build/
