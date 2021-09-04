@@ -1,12 +1,13 @@
 import argparse
 import logging
-from argparse import ArgumentParser
+from argparse import ArgumentParser, FileType
 from pathlib import Path
 
 from .examples import random_example
 from .scoring import score_puzzle
 from .search import search_puzzle
 from .view.cli import print_solution
+from .view.html import render_puzzle
 from .words import WordsCorpus
 
 LOGGER = logging.getLogger(__file__)
@@ -18,6 +19,7 @@ def parse_args() -> argparse.Namespace:
         "csv_path", nargs="?", type=Path, default=random_example(), help="CSV file containing word definitions"
     )
     argp.add_argument("--max-iterations", type=int, help="Number of parallel random searches")
+    argp.add_argument("--html-out", type=FileType("w"), help="Output board as HTML to this file")
     return argp.parse_args()
 
 
@@ -32,3 +34,7 @@ def main() -> None:
     LOGGER.debug("Beginning search, max iterations: %s", args.max_iterations)
     winning_puzzle = search_puzzle(words, score_puzzle, args.max_iterations)
     print_solution(winning_puzzle)
+
+    if args.html_out:
+        args.html_out.write(render_puzzle(winning_puzzle))
+        LOGGER.debug("Wrote HTML output to %s", args.html_out.name)

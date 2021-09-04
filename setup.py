@@ -4,15 +4,17 @@ setuptools.setup(
     name="cruziwords",
     packages=setuptools.find_packages(exclude=["tests", "tests.*"]),
     package_data={
-        "cruziwords.examples": ["european_capitals.csv"]
+        "cruziwords.examples": ["european_capitals.csv"],
+        "cruziwords.view": ["template.html"],
     },
     description="Crossword puzzle generator",
     author="Steffen Wenz",
     url="https://github.com/sportsracer/cruziwords",
-    classifiers=[
-        'Programming Language :: Python :: 3.9',
+    install_requires=[
+        "mako",
     ],
-    entry_points={
-        "console_scripts": ["cruziwords=cruziwords.__main__:main"]
-    }
+    classifiers=[
+        "Programming Language :: Python :: 3.9",
+    ],
+    entry_points={"console_scripts": ["cruziwords=cruziwords.__main__:main"]},
 )

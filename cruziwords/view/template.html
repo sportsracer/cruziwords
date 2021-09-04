@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cruziwords</title>
+    <style type="text/css">
+        body {
+            font-family: sans-serif;
+            font-size: 20px;
+        }
+
+        table.cruziwords {
+            table-layout: fixed;
+        }
+
+        table.cruziwords td {
+            height: 50px;
+            width: 50px;
+        }
+
+        table.cruziwords td.word_start, table.cruziwords td.letter {
+            background-color: #eee;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table.cruziwords td.word_start {
+            font-size: 8px;
+        }
+
+        table.cruziwords input {
+            height: 30px;
+            text-align: center;
+            vertical-align: middle;
+            width: 30px;
+        }
+    </style>
+</head>
+
+<%
+from cruziwords.puzzle import Direction, Letter, WordEnd, WordStart
+%>
+
+<%def name="render_cell(cell)">
+    % if cell is None or type(cell) is WordEnd:
+        <td class="empty"></td>
+    % elif type(cell) is WordStart:
+        <td class="word_start" title="${cell.word.clue}" style="background-color: ${color(cell.word)}">
+            ${('▶ ' if cell.dir == Direction.ACROSS else '▼ ') + cell.word.clue}
+        </td>
+    % elif type(cell) is Letter:
+        <td class="letter" style="background-color: ${color(*cell.words)}"><input type="text"/></td>
+    % endif
+</%def>
+
+<body>
+    <table class="cruziwords">
+        % for row in rows:
+        <tr>
+            % for cell in row:
+                ${render_cell(cell)}
+            % endfor
+        </tr>
+        % endfor
+    </table>
+</body>
+</html>

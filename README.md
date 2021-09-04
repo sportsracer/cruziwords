@@ -22,8 +22,8 @@ pip install -e .
 # Create a crossword puzzle, picking a random example
 cruziwords
 
-# Specify your own clues and solutions
-cruziwords PATH_TO_CSV_FILE
+# Specify your own clues and solutions, and render the puzzle to an HTML file
+cruziwords CSV_FILE --html-out HTML_FILE
 ```
 
 For specifying your own words, this is the format. It's possible to supply multiple possible solutions to the same
