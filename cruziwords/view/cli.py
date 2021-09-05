@@ -26,8 +26,6 @@ def print_solution(puzzle: Puzzle) -> None:
     """
     Print the solution of a crossword puzzle to the command line.
     """
-    for row in range(puzzle.top_left.row, puzzle.bottom_right.row + 1):
-        printed_row = "".join(
-            print_cell(puzzle[col, row]) for col in range(puzzle.top_left.col, puzzle.bottom_right.col + 1)
-        )
+    for row in range(puzzle.top, puzzle.bottom + 1):
+        printed_row = "".join(print_cell(puzzle[col, row]) for col in range(puzzle.left, puzzle.right + 1))
         print(printed_row)

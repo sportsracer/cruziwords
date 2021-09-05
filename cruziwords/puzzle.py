@@ -97,42 +97,56 @@ class Puzzle:
         return iter(self.__positions.items())
 
     @cached_property
-    def top_left(self) -> Position:
+    def dimensions(self) -> tuple[int, int, int, int]:
         """
-        :return: The position of the top left corner, if this puzzle were extended to be a rectangle.
+        If board were extended to a rectangle, calculate its dimensions.
+        :return: Tuple of (left, top, right, bottom) coordinates.
         """
-        if len(self.__positions) == 0:
-            return Position(0, 0)
-        return Position(
-            min(pos.col for pos in self.__positions),
-            min(pos.row for pos in self.__positions),
-        )
+        visible_positions = [pos for pos, square in self.__positions.items() if type(square) is not WordEnd]
+
+        if not visible_positions:
+            return 0, 0, 0, 0
+
+        first_pos = visible_positions[0]
+        left = right = first_pos.col
+        top = bottom = first_pos.row
+
+        for col, row in visible_positions[1:]:
+            if row < top:
+                top = row
+            elif row > bottom:
+                bottom = row
+
+            if col < left:
+                left = col
+            elif col > right:
+                right = col
+
+        return left, top, right, bottom
 
     @cached_property
-    def bottom_right(self) -> Position:
-        """
-        :return: The position of the bottom right corner, if this puzzle were extended to be a rectangle.
-        """
-        if len(self.__positions) == 0:
-            return Position(0, 0)
-        return Position(
-            max(pos.col for pos, square in self.__positions.items() if type(square) is not WordEnd),
-            max(pos.row for pos, square in self.__positions.items() if type(square) is not WordEnd),
-        )
+    def left(self) -> int:
+        return self.dimensions[0]
+
+    @cached_property
+    def top(self) -> int:
+        return self.dimensions[1]
+
+    @cached_property
+    def right(self) -> int:
+        return self.dimensions[2]
+
+    @cached_property
+    def bottom(self) -> int:
+        return self.dimensions[3]
 
     @cached_property
     def width(self) -> int:
-        """
-        :return: Maximum horizontal extension of this puzzle.
-        """
-        return self.bottom_right.col - self.top_left.col + 1
+        return self.right - self.left + 1
 
     @cached_property
     def height(self) -> int:
-        """
-        :return: Maximum vertical extension of this puzzle.
-        """
-        return self.bottom_right.row - self.top_left.row + 1
+        return self.bottom - self.top + 1
 
     def add_word(self, word: Word, start_pos: Position, dir: Direction) -> "Puzzle":
         """
@@ -143,7 +157,8 @@ class Puzzle:
         :return: A new puzzle with the new word added.
         """
         # A word can only start on an empty square, or another word's end
-        if not (start_pos not in self.__positions or type(self.__positions[start_pos]) is WordEnd):
+        start_square = self.__positions.get(start_pos)
+        if not (start_square is None or type(start_square) is WordEnd):
             raise InvalidOperation()
 
         # Keep track of the changes we'll need to apply to the new copy of this board
@@ -151,23 +166,24 @@ class Puzzle:
 
         # A word can only end on an empty square, or another word's start or end
         end_pos = start_pos.move(len(word) + 1, dir)
-        if end_pos not in self.__positions:
+        end_square = self.__positions.get(end_pos)
+        if end_square is None:
             changes[end_pos] = WordEnd()
-        elif type(self.__positions[end_pos]) not in {WordStart, WordEnd}:
+        elif type(end_square) not in {WordStart, WordEnd}:
             raise InvalidOperation()
 
         # A letter can only be placed on an empty square, or an identical letter
         for i in range(len(word)):
             pos = start_pos.move(i + 1, dir)
-            existing_letter: Letter
-            if pos not in self.__positions:
+            existing_letter = self.__positions.get(pos)
+            if existing_letter is None:
                 changes[pos] = Letter(word[i], frozenset([word]))
-            elif type(existing_letter := self.__positions[pos]) is Letter and existing_letter.letter == word[i]:  # type: ignore
+            elif type(existing_letter) is Letter and existing_letter.letter == word[i]:
                 changes[pos] = Letter(word[i], frozenset(existing_letter.words | {word}))
             else:
                 raise InvalidOperation()
 
-        # If we got this far, the word placement is valid. Make a copy of this board's positions, and construct a new
-        # instance.
-        new_positions = self.__positions.copy() | changes
+        # If we got this far, the word placement is valid. Make a copy of this board's positions with the changes, and
+        # construct a new instance.
+        new_positions = self.__positions | changes
         return Puzzle(new_positions)

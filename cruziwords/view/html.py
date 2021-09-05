@@ -33,8 +33,8 @@ def render_puzzle(puzzle: Puzzle) -> str:
     template = Template(filename="cruziwords/view/template.html")
 
     rows = [
-        [puzzle[col, row] for col in range(puzzle.top_left.col, puzzle.bottom_right.col + 1)]
-        for row in range(puzzle.top_left.row, puzzle.bottom_right.row + 1)
+        [puzzle[col, row] for col in range(puzzle.left, puzzle.right + 1)]
+        for row in range(puzzle.top, puzzle.bottom + 1)
     ]
 
     return str(template.render(rows=rows, color=color))
