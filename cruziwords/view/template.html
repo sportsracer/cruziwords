@@ -46,7 +46,7 @@ from cruziwords.puzzle import Direction, Letter, WordEnd, WordStart
         <td class="empty"></td>
     % elif type(cell) is WordStart:
         <td class="word_start" title="${cell.word.clue}" style="background-color: ${color(cell.word)}">
-            ${('▶ ' if cell.dir == Direction.ACROSS else '▼ ') + cell.word.clue}
+            ${('&#9654; ' if cell.dir == Direction.ACROSS else '&#9660; ') + cell.word.clue}
         </td>
     % elif type(cell) is Letter:
         <td class="letter" style="background-color: ${color(*cell.words)}"><input type="text"/></td>

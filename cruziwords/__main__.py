@@ -19,7 +19,7 @@ def parse_args() -> argparse.Namespace:
         "csv_path", nargs="?", type=Path, default=random_example(), help="CSV file containing word definitions"
     )
     argp.add_argument("--max-iterations", type=int, help="Number of parallel random searches")
-    argp.add_argument("--html-out", type=FileType("w"), help="Output board as HTML to this file")
+    argp.add_argument("--html-out", type=FileType("w", encoding="utf-8"), help="Output board as HTML to this file")
     return argp.parse_args()
 
 
