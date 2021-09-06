@@ -79,7 +79,7 @@ class WordsCorpus:
                     if definition and alt_word:
                         yield Word(row[0], alt_word)
 
-        with open(csv_path, "r") as csv_file:
+        with open(csv_path, "r", encoding="utf-8") as csv_file:
             csv_reader = csv.reader(csv_file)
             words = words_from_csv()
             return cls(words)
