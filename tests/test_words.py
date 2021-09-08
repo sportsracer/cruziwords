@@ -46,12 +46,13 @@ def test_words_containing_letter(words_csv: Path):
     assert not set(words.containing("X"))
 
 
-def test_normalisation(words_csv: Path):
-    words = WordsCorpus.from_csv_file(words_csv)
+def test_normalization():
     accented_string = "àéêhelloñçëïßäöü"
 
     assert normalize(accented_string) == "AEEHELLOÑÇËÏSSAEOEUE"
-    assert normalize(accented_string) != "AEEHELLOÑÇËÏßAEOEUE"
+
+def test_corpus_normalization(words_csv: Path):
+    words = WordsCorpus.from_csv_file(words_csv)
 
     assert any(word.solution == "ESPAÑA" for word in words)
     assert any(word.solution == "ETRE" for word in words)
