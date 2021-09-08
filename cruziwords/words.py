@@ -16,7 +16,6 @@ def normalize(raw_solution: str) -> str:
     raw_solution_upper = re.sub(u"[ÒÓÔÕ]", "O", raw_solution_upper)
     raw_solution_upper = re.sub(u"[ÙÚÛ]", "U", raw_solution_upper)
     raw_solution_upper = re.sub(u"[ÝŸ]", "Y", raw_solution_upper)
-    # raw_solution_upper = re.sub(u"[ß]", 'SS', raw_solution)
     raw_solution_upper = re.sub("Ä", "AE", raw_solution_upper)  # Replace pattern Ä -> AE as in German
     raw_solution_upper = re.sub("Ü", "UE", raw_solution_upper)  # Replace pattern Ü -> UE as in German
     raw_solution_upper = re.sub("Ö", "OE", raw_solution_upper)  # Replace pattern Ö -> OE as in German
