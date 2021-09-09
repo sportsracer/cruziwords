@@ -1,5 +1,25 @@
-import csv
+import csv, re
 from typing import Any, Iterable, NamedTuple
+
+
+def normalize(raw_solution: str) -> str:
+    """
+    Method that normalizes the solutions used in the puzzle taken that the input file does not have a defined final format
+    In many languages the accents in vowels are omitted in crosswords puzzles, letters are considered uppercase only etc
+    Valid for French, Italian, Spanish, German ...
+    source https://en.wikipedia.org/wiki/Crossword#Orthography
+    """
+    raw_solution_upper = raw_solution.upper()
+    raw_solution_upper = re.sub(u"[ÀÁÂÃÅ]", "A", raw_solution_upper)
+    raw_solution_upper = re.sub(u"[ÈÉÊ]", "E", raw_solution_upper)
+    raw_solution_upper = re.sub(u"[ÌÍÎ]", "I", raw_solution_upper)
+    raw_solution_upper = re.sub(u"[ÒÓÔÕ]", "O", raw_solution_upper)
+    raw_solution_upper = re.sub(u"[ÙÚÛ]", "U", raw_solution_upper)
+    raw_solution_upper = re.sub(u"[ÝŸ]", "Y", raw_solution_upper)
+    raw_solution_upper = re.sub("Ä", "AE", raw_solution_upper)  # Replace pattern Ä -> AE as in German
+    raw_solution_upper = re.sub("Ü", "UE", raw_solution_upper)  # Replace pattern Ü -> UE as in German
+    raw_solution_upper = re.sub("Ö", "OE", raw_solution_upper)  # Replace pattern Ö -> OE as in German
+    return raw_solution_upper
 
 
 class Word(NamedTuple):
@@ -77,7 +97,7 @@ class WordsCorpus:
                 definition = row[0]
                 for alt_word in row[1:]:
                     if definition and alt_word:
-                        yield Word(row[0], alt_word)
+                        yield Word(row[0], normalize(alt_word))
 
         with open(csv_path, "r", encoding="utf-8") as csv_file:
             csv_reader = csv.reader(csv_file)
