@@ -5,6 +5,8 @@ Crosswords puzzle generator. The name *cruziwords* is a mix of the Spanish and E
 This script is supposed to be used with just a few dozen input words. It will try to place all of them in a dense
 puzzle. Use it, for example, for thematic quizzes, family games …
 
+![European capitals](doc/european-capitals.png)
+
 ## Installation
 
 Requires Python 3.9.
@@ -31,7 +33,7 @@ clue. The program will try to place all of them.
 
 ```
 Capital of Germany,BERLIN
-Europan capital,MADRID,PARIS
+European capital,MADRID,PARIS
 ```
 
 ## Development
@@ -46,7 +48,7 @@ tox -e black
 tox -e mypy
 
 # Run tests
-tox -e py39
+tox -e py
 
 # … or all at once!
 tox
