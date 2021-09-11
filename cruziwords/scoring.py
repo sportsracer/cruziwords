@@ -1,6 +1,6 @@
 from typing import Callable, Union
 
-from .puzzle import Letter, Puzzle, WordEnd
+from .puzzle import Letter, Puzzle, WordEnd, WordStart
 
 ScoreFuncType = Callable[[Puzzle], Union[int, float]]
 
@@ -21,6 +21,21 @@ def calculate_density(puzzle: Puzzle) -> float:
         return 0
     filled_cells = sum(1 for _, cell in puzzle if type(cell) is not WordEnd)
     return filled_cells / area
+
+
+def count_words(puzzle: Puzzle) -> int:
+    """
+    Method that returns the number of words used in the puzzle.
+    :param puzzle: Puzzle to assess
+    :return: The count of words
+    """
+    word_count: int = 0
+
+    for _, cell in puzzle:
+        if type(cell) is WordStart:
+            word_count += 1
+
+    return word_count
 
 
 def score_puzzle(puzzle: Puzzle) -> float:
