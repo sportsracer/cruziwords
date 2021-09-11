@@ -4,27 +4,13 @@ from cruziwords.puzzle import Direction, InvalidOperation, Position, Puzzle, Wor
 from cruziwords.words import Word
 
 
-@pytest.fixture
-def puzzle() -> Puzzle:
-    return Puzzle()
-
-
-@pytest.fixture
-def kabul() -> Word:
-    return Word("Capital of Afghanistan", "KABUL")
-
-
-@pytest.fixture
-def baghdad() -> Word:
-    return Word("Capital of Iraq", "BAGHDAD")
-
-
 def test_empty_puzzle():
     puzzle = Puzzle()
     assert puzzle[0, 0] is None
 
 
-def test_add_word(puzzle: Puzzle, kabul: Word):
+def test_add_word(kabul: Word):
+    puzzle = Puzzle()
     new_puzzle = puzzle.add_word(kabul, Position(0, 0), Direction.ACROSS)
 
     assert puzzle[0, 0] is None
@@ -41,7 +27,8 @@ def test_add_word(puzzle: Puzzle, kabul: Word):
     assert type(new_puzzle[6, 0]) is WordEnd
 
 
-def test_puzzle_dimensions(puzzle: Puzzle, kabul: Word):
+def test_puzzle_dimensions(kabul: Word):
+    puzzle = Puzzle()
     assert puzzle.left == puzzle.top == puzzle.right == puzzle.bottom == 0
 
     puzzle = (
@@ -57,8 +44,8 @@ def test_puzzle_dimensions(puzzle: Puzzle, kabul: Word):
     assert puzzle.height == 6
 
 
-def test_add_word_collision(puzzle: Puzzle, kabul: Word):
-    puzzle = puzzle.add_word(kabul, Position(0, 0), Direction.ACROSS)
+def test_add_word_collision(kabul: Word):
+    puzzle = Puzzle().add_word(kabul, Position(0, 0), Direction.ACROSS)
 
     with pytest.raises(InvalidOperation):
         puzzle.add_word(kabul, Position(0, 0), Direction.ACROSS)
@@ -73,9 +60,9 @@ def test_add_word_collision(puzzle: Puzzle, kabul: Word):
         puzzle.add_word(kabul, Position(6, -1), Direction.DOWN)
 
 
-def test_add_word_intersection(puzzle: Puzzle, kabul: Word, baghdad: Word):
+def test_add_word_intersection(kabul: Word, baghdad: Word):
     puzzle = (
-        puzzle
+        Puzzle()
         .add_word(kabul, Position(-2, 0), Direction.ACROSS)
         .add_word(baghdad, Position(0, -2), Direction.DOWN)
     )

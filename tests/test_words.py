@@ -18,7 +18,7 @@ Lice in German,Läuse"""
 
 
 def test_words(words_csv: Path):
-    words = WordsCorpus.from_csv_file(str(words_csv))
+    words = WordsCorpus.from_csv_file(words_csv)
 
     assert len(words) == 6
     assert len(set(words)) == 6
@@ -50,6 +50,7 @@ def test_normalization():
     accented_string = "àéêhelloñçëïßäöü"
 
     assert normalize(accented_string) == "AEEHELLOÑÇËÏSSAEOEUE"
+
 
 def test_corpus_normalization(words_csv: Path):
     words = WordsCorpus.from_csv_file(words_csv)

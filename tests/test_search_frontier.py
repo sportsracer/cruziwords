@@ -2,10 +2,9 @@ from cruziwords.puzzle import Direction, Position, Puzzle
 from cruziwords.search_frontier import SearchFrontier
 from cruziwords.words import Word, WordsCorpus
 
-from .test_puzzle import kabul, puzzle  # noqa: F401
 
-
-def test_search_frontier(puzzle: Puzzle, kabul: Word):
+def test_search_frontier(kabul: Word):
+    puzzle = Puzzle()
     puzzle_with_1_word = puzzle.add_word(kabul, Position(0, 0), Direction.ACROSS)
     puzzle_with_2_words = puzzle_with_1_word.add_word(kabul, Position(0, 1), Direction.ACROSS)
 

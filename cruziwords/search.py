@@ -70,7 +70,7 @@ def search_puzzle(words: WordsCorpus, score_func: ScoreFuncType, max_iterations:
     :return: The best puzzle discovered by this search.
     """
     # Place the longest word first.
-    first_word = max(words, key=Word.__len__)  # type: ignore
+    first_word = max(words, key=Word.__len__)
     words = words.pop(first_word)
     start_puzzle = Puzzle().add_word(first_word, Position(0, 0), Direction.DOWN)
 

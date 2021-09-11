@@ -1,5 +1,6 @@
 import csv, re
-from typing import Any, Iterable, NamedTuple
+from pathlib import Path
+from typing import Any, Iterable, Iterator, NamedTuple, Union
 
 
 def normalize(raw_solution: str) -> str:
@@ -57,7 +58,7 @@ class WordsCorpus:
     def __len__(self) -> int:
         return len(self.words)
 
-    def __iter__(self) -> Iterable[Word]:
+    def __iter__(self) -> Iterator[Word]:
         return iter(self.words)
 
     def pop(self, word: Word) -> "WordsCorpus":
@@ -81,7 +82,7 @@ class WordsCorpus:
                         yield word, i
 
     @classmethod
-    def from_csv_file(cls, csv_path: str) -> "WordsCorpus":
+    def from_csv_file(cls, csv_path: Union[str, Path]) -> "WordsCorpus":
         """
         Construct a word corpus from a CSV file. Clue goes in the first column, and then one or more solutions in the
         following columns. For example:
