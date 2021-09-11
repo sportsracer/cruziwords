@@ -34,7 +34,7 @@ class Position(NamedTuple):
 
 class WordStart(NamedTuple):
     """
-    A sqzare on a crossword puzzle that is the start of a word.
+    A square on a crossword puzzle that is the start of a word.
     """
 
     word: Word

@@ -4,7 +4,7 @@ from argparse import ArgumentParser, FileType
 from pathlib import Path
 
 from .examples import random_example
-from .scoring import score_puzzle
+from .scoring import count_words, score_puzzle
 from .search import search_puzzle
 from .view.cli import print_solution
 from .view.html import render_puzzle
@@ -34,6 +34,7 @@ def main() -> None:
     LOGGER.debug("Beginning search, max iterations: %s", args.max_iterations)
     winning_puzzle = search_puzzle(words, score_puzzle, args.max_iterations)
     print_solution(winning_puzzle)
+    LOGGER.debug("Placed %s words", count_words(winning_puzzle))
 
     if args.html_out:
         args.html_out.write(render_puzzle(winning_puzzle))
