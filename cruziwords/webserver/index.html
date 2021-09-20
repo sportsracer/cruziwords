@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to cruziwords!</title>
+    <style type="text/css">
+
+        body {
+
+            font-family: sans-serif;
+            font-size: 16px;
+
+        }
+
+        p {
+            text-align: left;
+        }
+
+        #csv {
+            background-color: grey;
+            color: rgb(255, 255, 255);
+            font-family: Monospace;
+            margin: 10px 0px 0px 10px;
+            height: 25%;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to cruziwords generator!</h1>
+
+<form action="cruziwords" method="post" enctype="multipart/form-data">
+    <label>Chose your csv file
+        <input name="file" type="file" accept="text/csv">
+    </label>
+    <p> The format of the file being: <b>Clue</b> in the first column, and then one or more <b>solutions</b> in the
+        following columns.
+        <br>For example:
+        <div id = "csv">
+            <br>Capital of Spain,MADRID
+            <br>Historic capital of Spain,TOLEDO,CORDOBA
+        </div>
+    </p>
+    <input name="submit" type="submit"/>
+</form>
+</body>
+</html>
