@@ -1,14 +1,14 @@
+import argparse
 import cgi
-from logging import getLogger
+import logging
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from typing import Optional
 
 from cruziwords.scoring import score_puzzle
 from cruziwords.search import search_puzzle
 from cruziwords.view.html import render_puzzle
 from cruziwords.words import WordsCorpus
 
-LOGGER = getLogger(__file__)
+LOGGER = logging.getLogger(__file__)
 
 
 class CruziwordsHandler(BaseHTTPRequestHandler):
@@ -44,9 +44,19 @@ class CruziwordsHandler(BaseHTTPRequestHandler):
             self.wfile.write(html_out.encode())
 
 
-def start_server(port: int = 8000) -> None:
+def parse_args() -> argparse.Namespace:
+    argp = argparse.ArgumentParser("Cruziwords webserver!")
+    argp.add_argument("port", nargs="?", type=int, default=8000, help="Port number where the server should run")
+    return argp.parse_args()
+
+
+def start_server() -> None:
+    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s\t%(levelname)s\t%(message)s")
+
+    args = parse_args()
+    port = args.port
     server = HTTPServer(("", port), CruziwordsHandler)
-    LOGGER.warning("Server starting on port %d", port)
+    LOGGER.info("Server starting on port %d", port)
     server.serve_forever()
 
 

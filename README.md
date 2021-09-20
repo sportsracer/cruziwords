@@ -36,7 +36,7 @@ The server expects a csv file to be imported and by submitting it, the server wi
 
 ```shell
 # Start crossword generator webserver:
-cruziwords_webserver
+cruziwords_webserver [PORT]
 ```
 
 … Then visit http://localhost:8000 to upload a file.
