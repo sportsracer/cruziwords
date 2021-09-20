@@ -16,5 +16,10 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3.9",
     ],
-    entry_points={"console_scripts": ["cruziwords=cruziwords.__main__:main"]},
+    entry_points={
+        "console_scripts": [
+            "cruziwords=cruziwords.__main__:main",
+            "cruziwords_webserver=cruziwords.webserver.webserver:start_server",
+        ]
+    },
 )
