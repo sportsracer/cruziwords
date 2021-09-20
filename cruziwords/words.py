@@ -82,6 +82,25 @@ class WordsCorpus:
                         yield word, i
 
     @classmethod
+    def from_csv_string(cls, csv_string: str) -> "WordsCorpus":
+        """
+        Construct a word corpus from an in-memory CSV file.
+        :param csv_string: A CSV file read in memory.
+        """
+        csv_lines = csv_string.splitlines()
+        csv_reader = csv.reader(csv_lines)
+
+        def words_from_csv() -> Iterable[Word]:
+            for row in csv_reader:
+                definition = row[0]
+                for alt_word in row[1:]:
+                    if definition and alt_word:
+                        yield Word(row[0], normalize(alt_word))
+
+        words = words_from_csv()
+        return cls(words)
+
+    @classmethod
     def from_csv_file(cls, csv_path: Union[str, Path]) -> "WordsCorpus":
         """
         Construct a word corpus from a CSV file. Clue goes in the first column, and then one or more solutions in the
@@ -92,15 +111,6 @@ class WordsCorpus:
 
         :param csv_path: Path to CSV file.
         """
-
-        def words_from_csv() -> Iterable[Word]:
-            for row in csv_reader:
-                definition = row[0]
-                for alt_word in row[1:]:
-                    if definition and alt_word:
-                        yield Word(row[0], normalize(alt_word))
-
         with open(csv_path, "r", encoding="utf-8") as csv_file:
-            csv_reader = csv.reader(csv_file)
-            words = words_from_csv()
-            return cls(words)
+            csv_string = csv_file.read()
+            return cls.from_csv_string(csv_string)
