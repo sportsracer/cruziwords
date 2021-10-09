@@ -2,7 +2,7 @@ import logging
 import random
 from itertools import groupby
 from operator import itemgetter
-from typing import Iterable, Optional
+from typing import Iterable
 
 from .puzzle import Direction, InvalidOperation, Letter, Position, Puzzle
 from .scoring import ScoreFuncType
@@ -61,7 +61,7 @@ def greedy_search(words: WordsCorpus, puzzle: Puzzle, score_func: ScoreFuncType,
         yield puzzle
 
 
-def search_puzzle(words: WordsCorpus, score_func: ScoreFuncType, max_iterations: Optional[int] = None) -> Puzzle:
+def search_puzzle(words: WordsCorpus, score_func: ScoreFuncType, max_iterations: int | None = None) -> Puzzle:
     """
     Create a nice puzzle which contains as many words from words corpus as can be placed.
     :param words: Words that should be placed.

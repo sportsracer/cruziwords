@@ -1,5 +1,3 @@
-from typing import Iterable
-
 from mako.template import Template
 
 from ..puzzle import Puzzle

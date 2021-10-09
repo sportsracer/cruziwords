@@ -1,11 +1,10 @@
 from functools import singledispatch
-from typing import Optional
 
 from ..puzzle import Direction, Letter, Puzzle, WordEnd, WordStart
 
 
 @singledispatch
-def print_cell(cell: Optional[WordEnd]) -> str:
+def print_cell(cell: WordEnd | None) -> str:
     """
     Return CLI representation of a single cell.
     """

@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from enum import Enum
 from functools import cached_property
-from typing import Iterator, NamedTuple, Optional, Union
+from typing import Iterator, NamedTuple, TypeAlias
 
 from .words import Word
 
@@ -22,7 +24,7 @@ class Position(NamedTuple):
     col: int
     row: int
 
-    def move(self, step: int, direction: Direction) -> "Position":
+    def move(self, step: int, direction: Direction) -> Position:
         if direction == Direction.ACROSS:
             return Position(self.col + step, self.row)
 
@@ -57,7 +59,7 @@ class WordEnd:
     """
 
 
-SquareType = Union[WordStart, Letter, WordEnd]
+SquareType: TypeAlias = WordStart | Letter | WordEnd
 
 
 class InvalidOperation(Exception):
@@ -74,14 +76,14 @@ class Puzzle:
     puzzle.
     """
 
-    def __init__(self, positions: Optional[dict[Position, SquareType]] = None):
+    def __init__(self, positions: dict[Position, SquareType] | None = None):
         """
         :param positions: Mapping of positions to squares. Not expected to be set by caller; use `add_word` to construct
         puzzles instead.
         """
         self.__positions = positions or {}
 
-    def __getitem__(self, col_row: tuple[int, int]) -> Optional[SquareType]:
+    def __getitem__(self, col_row: tuple[int, int]) -> SquareType | None:
         """
         For accessing a square like this: `puzzle[2, 3]`.
         :param col_row: Column and row indices.
@@ -148,7 +150,7 @@ class Puzzle:
     def height(self) -> int:
         return self.bottom - self.top + 1
 
-    def add_word(self, word: Word, start_pos: Position, dir: Direction) -> "Puzzle":
+    def add_word(self, word: Word, start_pos: Position, dir: Direction) -> Puzzle:
         """
         Add a word and return a new puzzle, if word placement is valid, otherwise raising `InvalidOperation`.
         :param word: Word to place on puzzle.
