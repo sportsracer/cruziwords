@@ -25,11 +25,11 @@ class Position(NamedTuple):
     row: int
 
     def move(self, step: int, direction: Direction) -> Position:
-        if direction == Direction.ACROSS:
-            return Position(self.col + step, self.row)
-
-        if direction == Direction.DOWN:
-            return Position(self.col, self.row + step)
+        match direction:
+            case Direction.ACROSS:
+                return Position(self.col + step, self.row)
+            case Direction.DOWN:
+                return Position(self.col, self.row + step)
 
         raise ValueError()
 
@@ -169,21 +169,25 @@ class Puzzle:
         # A word can only end on an empty square, or another word's start or end
         end_pos = start_pos.move(len(word) + 1, dir)
         end_square = self.__positions.get(end_pos)
-        if end_square is None:
-            changes[end_pos] = WordEnd()
-        elif type(end_square) not in {WordStart, WordEnd}:
-            raise InvalidOperation()
+        match end_square:
+            case None:
+                changes[end_pos] = WordEnd()
+            case WordStart() | WordEnd():
+                pass
+            case _:
+                raise InvalidOperation()
 
         # A letter can only be placed on an empty square, or an identical letter
         for i in range(len(word)):
             pos = start_pos.move(i + 1, dir)
             existing_letter = self.__positions.get(pos)
-            if existing_letter is None:
-                changes[pos] = Letter(word[i], frozenset([word]))
-            elif type(existing_letter) is Letter and existing_letter.letter == word[i]:
-                changes[pos] = Letter(word[i], frozenset(existing_letter.words | {word}))
-            else:
-                raise InvalidOperation()
+            match existing_letter:
+                case None:
+                    changes[pos] = Letter(word[i], frozenset([word]))
+                case Letter(letter=letter) if letter == word[i]:
+                    changes[pos] = Letter(word[i], frozenset(existing_letter.words | {word}))
+                case _:
+                    raise InvalidOperation()
 
         # If we got this far, the word placement is valid. Make a copy of this board's positions with the changes, and
         # construct a new instance.

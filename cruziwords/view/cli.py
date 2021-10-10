@@ -1,24 +1,17 @@
-from functools import singledispatch
-
-from ..puzzle import Direction, Letter, Puzzle, WordEnd, WordStart
+from ..puzzle import Direction, Letter, Puzzle, SquareType, WordStart
 
 
-@singledispatch
-def print_cell(cell: WordEnd | None) -> str:
+def print_square(square: SquareType) -> str:
     """
-    Return CLI representation of a single cell.
+    Render a cell to the terminal (or any place with unformatted fixed-width font).
     """
-    return "   "
-
-
-@print_cell.register
-def _(cell: WordStart) -> str:
-    return f" {'▶' if cell.dir == Direction.ACROSS else '▼'} "
-
-
-@print_cell.register
-def __(cell: Letter) -> str:
-    return f" {cell.letter} "
+    match square:
+        case WordStart(dir=dir):
+            return f" {'▶' if dir == Direction.ACROSS else '▼'} "
+        case Letter(letter=letter):
+            return f" {letter} "
+        case _:
+            return "   "
 
 
 def print_solution(puzzle: Puzzle) -> None:
@@ -26,5 +19,5 @@ def print_solution(puzzle: Puzzle) -> None:
     Print the solution of a crossword puzzle to the command line.
     """
     for row in range(puzzle.top, puzzle.bottom + 1):
-        printed_row = "".join(print_cell(puzzle[col, row]) for col in range(puzzle.left, puzzle.right + 1))
+        printed_row = "".join(print_square(puzzle[col, row]) for col in range(puzzle.left, puzzle.right + 1))
         print(printed_row)
