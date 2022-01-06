@@ -14,12 +14,12 @@ def normalize(raw_solution: str) -> str:
     source https://en.wikipedia.org/wiki/Crossword#Orthography
     """
     raw_solution_upper = raw_solution.upper()
-    raw_solution_upper = re.sub(u"[ÀÁÂÃÅ]", "A", raw_solution_upper)
-    raw_solution_upper = re.sub(u"[ÈÉÊ]", "E", raw_solution_upper)
-    raw_solution_upper = re.sub(u"[ÌÍÎ]", "I", raw_solution_upper)
-    raw_solution_upper = re.sub(u"[ÒÓÔÕ]", "O", raw_solution_upper)
-    raw_solution_upper = re.sub(u"[ÙÚÛ]", "U", raw_solution_upper)
-    raw_solution_upper = re.sub(u"[ÝŸ]", "Y", raw_solution_upper)
+    raw_solution_upper = re.sub("[ÀÁÂÃÅ]", "A", raw_solution_upper)
+    raw_solution_upper = re.sub("[ÈÉÊ]", "E", raw_solution_upper)
+    raw_solution_upper = re.sub("[ÌÍÎ]", "I", raw_solution_upper)
+    raw_solution_upper = re.sub("[ÒÓÔÕ]", "O", raw_solution_upper)
+    raw_solution_upper = re.sub("[ÙÚÛ]", "U", raw_solution_upper)
+    raw_solution_upper = re.sub("[ÝŸ]", "Y", raw_solution_upper)
     raw_solution_upper = re.sub("Ä", "AE", raw_solution_upper)  # Replace pattern Ä -> AE as in German
     raw_solution_upper = re.sub("Ü", "UE", raw_solution_upper)  # Replace pattern Ü -> UE as in German
     raw_solution_upper = re.sub("Ö", "OE", raw_solution_upper)  # Replace pattern Ö -> OE as in German

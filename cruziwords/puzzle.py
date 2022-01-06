@@ -184,8 +184,8 @@ class Puzzle:
             match existing_letter:
                 case None:
                     changes[pos] = Letter(word[i], frozenset([word]))
-                case Letter(letter=letter) if letter == word[i]:
-                    changes[pos] = Letter(word[i], frozenset(existing_letter.words | {word}))
+                case Letter(letter=letter, words=words) if letter == word[i]:
+                    changes[pos] = Letter(word[i], frozenset(words | {word}))
                 case _:
                     raise InvalidOperation()
 

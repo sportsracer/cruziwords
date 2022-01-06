@@ -31,9 +31,9 @@ def color(*words: Word) -> str:
 def render_square(square: SquareType) -> str:
     match square:
         case WordStart(dir=dir, word=word):
-            return f'''<td class="word_start" title="{escape(word.clue)}" style="background-color: {color(word)}">
+            return f"""<td class="word_start" title="{escape(word.clue)}" style="background-color: {color(word)}">
                 {"&#9654; " if dir == Direction.ACROSS else "&#9660; "} {escape(word.clue)}
-            </td>'''
+            </td>"""
         case Letter(words=words):
             return f'<td class="letter" style="background-color: {color(*words)}"><input type="text"/></td>'
         case _:
