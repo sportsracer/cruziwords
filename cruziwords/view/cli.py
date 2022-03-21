@@ -1,7 +1,7 @@
 from ..puzzle import Direction, Letter, Puzzle, SquareType, WordStart
 
 
-def print_square(square: SquareType) -> str:
+def print_square(square: SquareType | None) -> str:
     """
     Render a cell to the terminal (or any place with unformatted fixed-width font).
     """
