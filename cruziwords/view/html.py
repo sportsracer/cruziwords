@@ -1,8 +1,7 @@
-from typing import Iterable
-
+from markupsafe import escape
 from mako.template import Template
 
-from ..puzzle import Puzzle
+from ..puzzle import Direction, Letter, Puzzle, SquareType, WordStart
 from ..words import Word
 
 ColorType = tuple[int, int, int]
@@ -29,6 +28,18 @@ def color(*words: Word) -> str:
     return f"rgb({r}, {g}, {b})"
 
 
+def render_square(square: SquareType) -> str:
+    match square:
+        case WordStart(dir=dir, word=word):
+            return f"""<td class="word_start" title="{escape(word.clue)}" style="background-color: {color(word)}">
+                {"&#9654; " if dir == Direction.ACROSS else "&#9660; "} {escape(word.clue)}
+            </td>"""
+        case Letter(words=words):
+            return f'<td class="letter" style="background-color: {color(*words)}"><input type="text"/></td>'
+        case _:
+            return '<td class="empty"></td>'
+
+
 def render_puzzle(puzzle: Puzzle) -> str:
     template = Template(filename="cruziwords/view/template.html")
 
@@ -37,4 +48,4 @@ def render_puzzle(puzzle: Puzzle) -> str:
         for row in range(puzzle.top, puzzle.bottom + 1)
     ]
 
-    return str(template.render(rows=rows, color=color))
+    return str(template.render(rows=rows, color=color, render_square=render_square))

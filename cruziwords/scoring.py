@@ -1,8 +1,8 @@
-from typing import Callable, Union
+from typing import Callable, TypeAlias
 
 from .puzzle import Letter, Puzzle, WordEnd, WordStart
 
-ScoreFuncType = Callable[[Puzzle], Union[int, float]]
+ScoreFuncType: TypeAlias = Callable[[Puzzle], int | float]
 
 
 def count_checked_squares(puzzle: Puzzle) -> int:

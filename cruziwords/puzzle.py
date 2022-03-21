@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from enum import Enum
 from functools import cached_property
-from typing import Iterator, NamedTuple, Optional, Union
+from typing import Iterator, NamedTuple, TypeAlias
 
 from .words import Word
 
@@ -22,12 +24,12 @@ class Position(NamedTuple):
     col: int
     row: int
 
-    def move(self, step: int, direction: Direction) -> "Position":
-        if direction == Direction.ACROSS:
-            return Position(self.col + step, self.row)
-
-        if direction == Direction.DOWN:
-            return Position(self.col, self.row + step)
+    def move(self, step: int, direction: Direction) -> Position:
+        match direction:
+            case Direction.ACROSS:
+                return Position(self.col + step, self.row)
+            case Direction.DOWN:
+                return Position(self.col, self.row + step)
 
         raise ValueError()
 
@@ -57,7 +59,7 @@ class WordEnd:
     """
 
 
-SquareType = Union[WordStart, Letter, WordEnd]
+SquareType: TypeAlias = WordStart | Letter | WordEnd
 
 
 class InvalidOperation(Exception):
@@ -74,14 +76,14 @@ class Puzzle:
     puzzle.
     """
 
-    def __init__(self, positions: Optional[dict[Position, SquareType]] = None):
+    def __init__(self, positions: dict[Position, SquareType] | None = None):
         """
         :param positions: Mapping of positions to squares. Not expected to be set by caller; use `add_word` to construct
         puzzles instead.
         """
         self.__positions = positions or {}
 
-    def __getitem__(self, col_row: tuple[int, int]) -> Optional[SquareType]:
+    def __getitem__(self, col_row: tuple[int, int]) -> SquareType | None:
         """
         For accessing a square like this: `puzzle[2, 3]`.
         :param col_row: Column and row indices.
@@ -148,7 +150,7 @@ class Puzzle:
     def height(self) -> int:
         return self.bottom - self.top + 1
 
-    def add_word(self, word: Word, start_pos: Position, dir: Direction) -> "Puzzle":
+    def add_word(self, word: Word, start_pos: Position, dir: Direction) -> Puzzle:
         """
         Add a word and return a new puzzle, if word placement is valid, otherwise raising `InvalidOperation`.
         :param word: Word to place on puzzle.
@@ -167,21 +169,25 @@ class Puzzle:
         # A word can only end on an empty square, or another word's start or end
         end_pos = start_pos.move(len(word) + 1, dir)
         end_square = self.__positions.get(end_pos)
-        if end_square is None:
-            changes[end_pos] = WordEnd()
-        elif type(end_square) not in {WordStart, WordEnd}:
-            raise InvalidOperation()
+        match end_square:
+            case None:
+                changes[end_pos] = WordEnd()
+            case WordStart() | WordEnd():
+                pass
+            case _:
+                raise InvalidOperation()
 
         # A letter can only be placed on an empty square, or an identical letter
         for i in range(len(word)):
             pos = start_pos.move(i + 1, dir)
             existing_letter = self.__positions.get(pos)
-            if existing_letter is None:
-                changes[pos] = Letter(word[i], frozenset([word]))
-            elif type(existing_letter) is Letter and existing_letter.letter == word[i]:
-                changes[pos] = Letter(word[i], frozenset(existing_letter.words | {word}))
-            else:
-                raise InvalidOperation()
+            match existing_letter:
+                case None:
+                    changes[pos] = Letter(word[i], frozenset([word]))
+                case Letter(letter=letter, words=words) if letter == word[i]:
+                    changes[pos] = Letter(word[i], frozenset(words | {word}))
+                case _:
+                    raise InvalidOperation()
 
         # If we got this far, the word placement is valid. Make a copy of this board's positions with the changes, and
         # construct a new instance.
