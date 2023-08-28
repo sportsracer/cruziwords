@@ -21,7 +21,8 @@ class CruziwordsHandler(BaseHTTPRequestHandler):
         self.wfile.write(output.encode())
 
     def parse_csv_from_post_request(self) -> str:
-        ctype, pdict = cgi.parse_header(self.headers.get("content-type"))
+        ctype_header = str(self.headers.get("content-type"))
+        ctype, pdict = cgi.parse_header(ctype_header)
         if ctype != "multipart/form-data":
             raise ValueError("Unexpected Content-Type")
 
