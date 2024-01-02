@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 from functools import cached_property
-from typing import Iterator, NamedTuple, TypeAlias
+from typing import Iterator, NamedTuple
 
 from .words import Word
 
@@ -59,7 +59,7 @@ class WordEnd:
     """
 
 
-SquareType: TypeAlias = WordStart | Letter | WordEnd
+type SquareType = WordStart | Letter | WordEnd  # type: ignore[valid-type]
 
 
 class InvalidOperation(Exception):

@@ -4,7 +4,7 @@ from mako.template import Template
 from ..puzzle import Direction, Letter, Puzzle, SquareType, WordStart
 from ..words import Word
 
-ColorType = tuple[int, int, int]
+type ColorType = tuple[int, int, int]  # type: ignore[valid-type]
 
 
 def color_word(word: Word) -> ColorType:
