@@ -14,7 +14,7 @@ setuptools.setup(
         "mako",
     ],
     classifiers=[
-        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.12",
     ],
     entry_points={
         "console_scripts": [

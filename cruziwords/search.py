@@ -35,7 +35,6 @@ def greedy_search(words: WordsCorpus, puzzle: Puzzle, score_func: ScoreFuncType,
 
     letter: str
     for letter, positions_group in letters_grouped:
-
         # Convert to list so we can iterate multiple times
         positions = list(pos for pos, _ in positions_group)
         random.shuffle(positions)

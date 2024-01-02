@@ -1,5 +1,5 @@
 import heapq
-from typing import Any, Iterator, NamedTuple
+from typing import Any, Iterator, NamedTuple, override
 
 from .puzzle import Puzzle
 from .scoring import ScoreFuncType
@@ -17,9 +17,11 @@ class SearchFrontier:
         puzzle: Puzzle
         words: WordsCorpus
 
+        @override
         def __lt__(self, other: Any) -> Any:
             return self.score < other.score
 
+        @override
         def __le__(self, other: Any) -> Any:
             return self.score <= other.score
 

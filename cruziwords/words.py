@@ -3,7 +3,7 @@ from __future__ import annotations
 import csv
 import re
 from pathlib import Path
-from typing import Any, Iterable, Iterator, NamedTuple
+from typing import Any, Iterable, Iterator, NamedTuple, Self
 
 
 def normalize(raw_solution: str) -> str:
@@ -85,7 +85,7 @@ class WordsCorpus:
                         yield word, i
 
     @classmethod
-    def from_csv_string(cls, csv_string: str) -> WordsCorpus:
+    def from_csv_string(cls, csv_string: str) -> Self:
         """
         Construct a word corpus from an in-memory CSV file.
         :param csv_string: A CSV file read in memory.
@@ -104,7 +104,7 @@ class WordsCorpus:
         return cls(words)
 
     @classmethod
-    def from_csv_file(cls, csv_path: str | Path) -> WordsCorpus:
+    def from_csv_file(cls, csv_path: str | Path) -> Self:
         """
         Construct a word corpus from a CSV file. Clue goes in the first column, and then one or more solutions in the
         following columns. For example:
