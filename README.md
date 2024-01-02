@@ -9,7 +9,7 @@ puzzle. Use it, for example, for thematic quizzes, family games …
 
 ## Installation
 
-Requires Python 3.10.
+Requires Python 3.12.
 
 We can either choose to build a docker image and run it or use virtualenv.
 
@@ -23,7 +23,7 @@ On virtualenv:
 
 ```shell
 # Install cruziwords in a virtual environment in development mode
-python3.10 -m venv venv
+python3.12 -m venv venv
 . venv/bin/activate
 pip install -e .
 ```
